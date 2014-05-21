@@ -142,7 +142,7 @@ class PrismicMiddleman < ::Middleman::Extension
         pageData ['slug'] =  document.slug == nil ? nil : document.slug
         pageData ['abstract'] = document["block.abstract"] == nil ? nil : document["block.abstract"].as_text
         pageData ['body'] =  document["block.body"] == nil ? nil : document["block.body"].as_html(nil)
-        pageData ['icona'] =  document["block.icona"] == nil ? nil : document["block.icona"].as_text
+        pageData ['icona'] =  document["block.icon"] == nil ? nil : document["block.icon"].as_text
         pageData ['images'] = getImagesAsHash (document)
         pageData ['sections'] = getSectionsAsHash (document)
         pageData ['KeyValuePairs'] = getKeyValuePairsAsHash (document)
