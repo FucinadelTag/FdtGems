@@ -88,7 +88,7 @@ class PrismicMiddleman < ::Middleman::Extension
         if (keyValuePairs && keyValuePairs.size > 0)
             keyValuePairs.each_with_index do |keyValuePair, index|
                 key = keyValuePair['key'].as_text;
-                value = keyValuePair['value'].as_html (nil)
+                value = keyValuePair['value']
 
                 keyValuePairsHash [key] = {'key' => key, 'value' => value}
             end
