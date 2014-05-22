@@ -129,7 +129,7 @@ class PrismicMiddleman < ::Middleman::Extension
 
                 blockDocument = block['link']
                 document = get_document (blockDocument.id)
-                indexKey = document["block.key"] == nil ? document.slug : document["block.key"]
+                indexKey = document["block.key"] == nil ? document.slug : document["block.key"].as_text
 
                 blocksHash [indexKey] = getBlockData (document)
             end
