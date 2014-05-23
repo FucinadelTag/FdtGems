@@ -106,7 +106,7 @@ class PrismicMiddleman < ::Middleman::Extension
             images.each_with_index do |image, index|
 
                 url = image['picture'].get_view('wide').url;
-                caption = image['caption'].as_text
+                caption = image["caption"] == nil ? nil : image["caption"].as_text
 
                 imagesHash [index] = {'url' => url , 'caption' => caption}
             end
