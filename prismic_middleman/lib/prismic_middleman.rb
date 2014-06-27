@@ -141,6 +141,7 @@ class PrismicMiddleman < ::Middleman::Extension
     def getBlockData (document)
         pageData = {}
         pageData ['title'] =  document["block.title"] == nil ? nil : document["block.title"].as_text
+        pageData ['description'] =  document["block.description"] == nil ? nil : document["block.description"].as_text
         pageData ['slug'] =  document.slug == nil ? nil : document.slug
         pageData ['abstract'] = document["block.abstract"] == nil ? nil : document["block.abstract"].as_text
         pageData ['body'] =  document["block.body"] == nil ? nil : document["block.body"].as_html(nil)
