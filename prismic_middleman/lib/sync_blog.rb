@@ -36,7 +36,7 @@ module Middleman
         if shared_instance.respond_to? :blog
           shared_instance.logger.info "  Contentful Sync: Start..."
 
-          prismic_middleman.prismic_search_form().each do |document|
+          prismic_middleman.prismic_search_form('blog').each do |document|
 
             author = prismic_middleman.get_document(document["blog.author"].id);
             #image = prismic_middleman.get_document(document["blog.image"].id);

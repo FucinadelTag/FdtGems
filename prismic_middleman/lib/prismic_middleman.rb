@@ -2,6 +2,7 @@
 require 'middleman-core'
 require 'middleman-blog/uri_templates'
 require "sync_blog"
+require "syncPages"
 
 # Extension namespace
 class PrismicMiddleman < ::Middleman::Extension
@@ -11,11 +12,12 @@ class PrismicMiddleman < ::Middleman::Extension
 
     option :url, nil, 'The Prismic API Url'
     option :defaultDocumentType, 'blog', 'The Prismic Content Type'
+    option :permalink, '/{category}/{title}.html'
+    option :default_extension, ".erb"
 
-    option :new_article_template, File.expand_path('../commands/article.tt', __FILE__), 'Path (relative to project root) to an ERb template that will be used to generate new Contentful articles from the "middleman contentful" command.'
+    option :new_article_template, 'fdt_templates/blog.tt', 'Path (relative to project root) to an ERb template that will be used to generate new Contentful articles from the "middleman contentful" command.'
 
 
-    option :sync_blog_before_build, false, "Synchronize the blog from Prismic before the build phase"
 
     def initialize(app, options_hash={}, &block)
         # Call super to build options from the options_hash
@@ -34,8 +36,9 @@ class PrismicMiddleman < ::Middleman::Extension
         # puts options.my_option
     end
 
-    def prismic_search_form
-        results = @api.form('everything').query(%([[:d = at(document.type, "#{self.options.defaultDocumentType}")]])).submit(@ref)
+
+    def prismic_search_form (documentType = 'block')
+        results = @api.form('everything').query(%([[:d = at(document.type, "#{documentType}")]])).submit(@ref)
         return results
     end
 
@@ -141,6 +144,8 @@ class PrismicMiddleman < ::Middleman::Extension
     def getBlockData (document)
         pageData = {}
         pageData ['title'] =  document["block.title"] == nil ? nil : document["block.title"].as_text
+        pageData ['pageType'] =  document["block.page_type"] == nil ? nil : document["block.page_type"].as_text
+        pageData ['urlType'] =  document["block.url_type"] == nil ? nil : document["block.url_type"].as_text
         pageData ['description'] =  document["block.description"] == nil ? nil : document["block.description"].as_text
         pageData ['slug'] =  document.slug == nil ? nil : document.slug
         pageData ['abstract'] = document["block.abstract"] == nil ? nil : document["block.abstract"].as_text
