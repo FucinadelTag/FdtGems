@@ -49,10 +49,11 @@ module Middleman::Cli
             prismic_middleman.get_by_tags(tag).each do |document|
 
                 pageData = prismic_middleman.getBlockData (document)
+                category = prismic_middleman.get_document(document["block.category"].id);
 
                 @title = pageData ['title']
                 @slug  = pageData ['slug']
-                @category = document["block.category"].slug
+                @category = category
                 @pageData = pageData
                 @siteData = siteData
 
@@ -62,11 +63,10 @@ module Middleman::Cli
 
 
                 path_template = uri_template prismic_inst.options.permalink
-                params = {category: @category, title: @slug}
+                params = {category: @category.slug, title: @slug}
                 article_path = apply_uri_template path_template, params
 
-                pageTemplate = 'fdt_templates/' + pageData ['pageType'].downcase + '.erb'
-
+                pageTemplate = getTemplateName (pageData ['pageType'])
                 template pageTemplate, File.join(shared_instance.source_dir, article_path + prismic_inst.options.default_extension)
                 #print template pageTemplate
 
@@ -77,6 +77,10 @@ module Middleman::Cli
         private
             def shared_instance
                 @shared_instance ||= ::Middleman::Application.server.inst
+            end
+
+            def getTemplateName (tamplateName='default')
+                'fdt_templates/' + tamplateName.downcase + '.erb'
             end
 
     end

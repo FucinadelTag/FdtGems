@@ -72,7 +72,7 @@ class PrismicMiddleman < ::Middleman::Extension
                 slug = safe_parameterize (title)
                 body = section['body'].as_html (nil)
 
-                sectionsHash [index] = {'slug' => slug, 'title' => title , 'body' => body}
+                sectionsHash [slug] = {'slug' => slug, 'title' => title , 'body' => body}
             end
         end
         return sectionsHash
@@ -144,7 +144,7 @@ class PrismicMiddleman < ::Middleman::Extension
     def getBlockData (document)
         pageData = {}
         pageData ['title'] =  document["block.title"] == nil ? nil : document["block.title"].as_text
-        pageData ['pageType'] =  document["block.page_type"] == nil ? nil : document["block.page_type"].as_text
+        pageData ['pageType'] =  document["block.page_type"] == nil ? 'default' : document["block.page_type"].as_text
         pageData ['urlType'] =  document["block.url_type"] == nil ? nil : document["block.url_type"].as_text
         pageData ['description'] =  document["block.description"] == nil ? nil : document["block.description"].as_text
         pageData ['slug'] =  document.slug == nil ? nil : document.slug
