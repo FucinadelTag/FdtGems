@@ -63,7 +63,7 @@ module Middleman::Cli
 
 
                 path_template = uri_template prismic_inst.options.permalink
-                params = {category: @category.slug, title: @slug}
+                params = {category: @category.slug, title: getUriTitle(pageData)}
                 article_path = apply_uri_template path_template, params
 
                 pageTemplate = getTemplateName (pageData ['pageType'])
@@ -81,6 +81,14 @@ module Middleman::Cli
 
             def getTemplateName (tamplateName='default')
                 'fdt_templates/' + tamplateName.downcase + '.erb'
+            end
+
+            def getUriTitle (pageData)
+                if pageData['urlType'] == 'Slug'
+                    pageData['slug']
+                else
+                    'index'
+                end
             end
 
     end
