@@ -110,8 +110,9 @@ class PrismicMiddleman < ::Middleman::Extension
 
                 url = image['picture'].get_view('wide').url;
                 caption = image["caption"] == nil ? nil : image["caption"].as_text
+                link = image["url"] == nil ? nil : image["url"].as_text
 
-                imagesHash [index] = {'url' => url , 'caption' => caption}
+                imagesHash [index] = {'url' => url , 'caption' => caption, 'link' => link}
             end
         end
         return imagesHash

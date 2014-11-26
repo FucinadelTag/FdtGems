@@ -51,6 +51,11 @@ module Middleman::Cli
                 pageData = prismic_middleman.getBlockData (document)
                 category = prismic_middleman.get_document(document["block.category"].id);
 
+                if @category.slug == 'home'
+                {
+                    @category.slug = false;
+                }
+
                 @title = pageData ['title']
                 @slug  = pageData ['slug']
                 @category = category
