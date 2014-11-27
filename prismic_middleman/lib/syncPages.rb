@@ -51,14 +51,13 @@ module Middleman::Cli
                 pageData = prismic_middleman.getBlockData (document)
                 category = prismic_middleman.get_document(document["block.category"].id);
 
-                if @category.slug == 'home'
-                {
-                    @category.slug = false;
-                }
+                if category.slug == 'home'
+                    categorySlug = '';
+                end
 
                 @title = pageData ['title']
                 @slug  = pageData ['slug']
-                @category = category
+                @categorySlug = categorySlug
                 @pageData = pageData
                 @siteData = siteData
 
@@ -68,7 +67,7 @@ module Middleman::Cli
 
 
                 path_template = uri_template prismic_inst.options.permalink
-                params = {category: @category.slug, title: getUriTitle(pageData)}
+                params = {category: @categorySlug, title: getUriTitle(pageData)}
                 article_path = apply_uri_template path_template, params
 
                 pageTemplate = getTemplateName (pageData ['pageType'])

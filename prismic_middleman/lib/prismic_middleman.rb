@@ -57,6 +57,23 @@ class PrismicMiddleman < ::Middleman::Extension
         images = document["block.gallery"]
     end
 
+    def getCategory (document)
+        category = document["block.category"];
+    end
+
+    def getCategoryAsHash (document)
+        category = getCategory (document)
+
+        categoriesHash = {};
+
+        if (category)
+            slug = category.slug
+            categoriesHash = {'slug' => slug}
+        end
+        return categoriesHash
+
+    end
+
     def getSections (document)
         sections = document["block.sections"]
     end
@@ -86,15 +103,18 @@ class PrismicMiddleman < ::Middleman::Extension
     def getKeyValuePairsAsHash (document)
         keyValuePairs = getKeyValuePairs (document)
 
-        keyValuePairsHash = {'key' => nil, 'value' => nil};
+        keyValuePairsHash = {'key' => nil, 'value' => nil, 'picture' => nil}
 
         if (keyValuePairs && keyValuePairs.size > 0)
-            keyValuePairs.each_with_index do |keyValuePair, index|
-                key = keyValuePair['key'].as_text;
-                value = keyValuePair['value']
 
-                keyValuePairsHash [key] = {'key' => key, 'value' => value}
+            keyValuePairs.each_with_index do |keyValuePair, index|
+                key = keyValuePair['key'].as_text
+                value = keyValuePair['value']
+                picture = keyValuePair['picture']
+
+                keyValuePairsHash [key] = {'key' => key, 'value' => value, 'picture' => picture}
             end
+
         end
         return keyValuePairsHash
 
@@ -143,11 +163,13 @@ class PrismicMiddleman < ::Middleman::Extension
     end
 
     def getBlockData (document)
+
         pageData = {}
         pageData ['title'] =  document["block.title"] == nil ? nil : document["block.title"].as_text
         pageData ['pageType'] =  document["block.page_type"] == nil ? 'default' : document["block.page_type"].as_text
         pageData ['urlType'] =  document["block.url_type"] == nil ? nil : document["block.url_type"].as_text
         pageData ['description'] =  document["block.description"] == nil ? nil : document["block.description"].as_text
+        pageData ['category'] = getCategoryAsHash (document)
         pageData ['slug'] =  document.slug == nil ? nil : document.slug
         pageData ['abstract'] = document["block.abstract"] == nil ? nil : document["block.abstract"].as_text
         pageData ['body'] =  document["block.body"] == nil ? nil : document["block.body"].as_html(nil)
