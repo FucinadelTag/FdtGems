@@ -53,18 +53,18 @@ module Middleman::Cli
 
                 if category.slug == 'home'
                     categorySlug = '';
+                else
+                    categorySlug = category.slug
                 end
 
                 @title = pageData ['title']
                 @slug  = pageData ['slug']
                 @categorySlug = categorySlug
+                @category = category
                 @pageData = pageData
                 @siteData = siteData
 
-
-
                 prismic_inst = shared_instance.prismic_middleman(options[:prismic])
-
 
                 path_template = uri_template prismic_inst.options.permalink
                 params = {category: @categorySlug, title: getUriTitle(pageData)}
