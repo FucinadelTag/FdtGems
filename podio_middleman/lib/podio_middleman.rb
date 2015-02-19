@@ -72,6 +72,8 @@ class PodioMiddleman < ::Middleman::Extension
                 value = formatImage (field['values'])
             when 'text'
                 value = formatText (field['values'])
+            when 'calculation'
+                value = formatNumber (field['values'])
             when 'category'
                 value = formatCategory (field['values'])
 
@@ -86,6 +88,11 @@ class PodioMiddleman < ::Middleman::Extension
     end
 
     def formatMoney (fieldValue)
+        value =  "%.2f" % fieldValue[0]['value']
+        return value
+    end
+
+    def formatNumber (fieldValue)
         value =  "%.2f" % fieldValue[0]['value']
         return value
     end
