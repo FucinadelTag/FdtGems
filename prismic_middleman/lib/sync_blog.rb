@@ -51,6 +51,17 @@ module Middleman
             @category = document["blog.category"].slug
             @body  = document["blog.body"].as_html(nil)
 
+            callToActions = document.get_group('blog.calltoaction')
+
+            @calltoactionArray = [];
+
+            if callToActions
+              callToActions.each do |cta|
+                @calltoactionArray = cta;
+              end
+            end
+
+
             blog_inst = shared_instance.blog(options[:blog])
 
             path_template = blog_inst.source_template

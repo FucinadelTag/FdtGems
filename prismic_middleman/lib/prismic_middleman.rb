@@ -15,7 +15,7 @@ class PrismicMiddleman < ::Middleman::Extension
     option :permalink, '/{category}/{title}.html'
     option :default_extension, ".erb"
 
-    option :new_article_template, 'fdt_templates/blog.tt', 'Path (relative to project root) to an ERb template that will be used to generate new Contentful articles from the "middleman contentful" command.'
+    option :new_article_template, 'fdt_templates/blog.erb', 'Path (relative to project root) to an ERb template that will be used to generate new Contentful articles from the "middleman contentful" command.'
 
 
 
