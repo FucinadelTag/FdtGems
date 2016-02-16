@@ -12,8 +12,7 @@ class PrismicMiddleman < ::Middleman::Extension
 
     option :url, nil, 'The Prismic API Url'
     option :defaultDocumentType, 'blog', 'The Prismic Content Type'
-    option :permalink, '/{category}/{title}.html'
-    option :default_extension, ".erb"
+    option :conf
 
     option :new_article_template, 'fdt_templates/blog.erb', 'Path (relative to project root) to an ERb template that will be used to generate new Contentful articles from the "middleman contentful" command.'
 
@@ -27,7 +26,7 @@ class PrismicMiddleman < ::Middleman::Extension
         # require 'necessary/library'
         require 'prismic'
 
-        app.set :prismic_middleman, self
+        app.config[:prismic_middleman] = self
 
         @api = Prismic.api (self.options.url);
         @ref = @api.master();
@@ -38,7 +37,7 @@ class PrismicMiddleman < ::Middleman::Extension
 
 
     def prismic_search_form (documentType = 'block')
-        results = @api.form('everything').query(%([[:d = at(document.type, "#{documentType}")]])).submit(@ref)
+        results = @api.form('everything').query(%([[:d = at(document.type, "#{documentType}")]])).page_size(100).submit(@ref)
         return results
     end
 

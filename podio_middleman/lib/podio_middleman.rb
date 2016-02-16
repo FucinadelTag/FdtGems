@@ -28,7 +28,7 @@ class PodioMiddleman < ::Middleman::Extension
         # require 'necessary/library'
         require 'podio'
 
-        app.set :podio_middleman, self
+        app.config[:podio_middleman] = self
 
         Podio.setup(:api_key => options.podio_api_key, :api_secret => options.podio_api_secret)
 

@@ -23,14 +23,13 @@ module Middleman::Cli
             ENV['MM_ROOT']
         end
 
-
-
-
         desc 'syncPages NAME [options]', 'Create new project NAME'
-        method_option 'document_type',
-                        aliases: '-T',
-                        default: 'default',
-                        desc: "Il document type"
+
+        class_option :document_type,
+                    type: :string,
+                    aliases: '-T',
+                    desc: 'Il document type'
+
         # The syncPages task
         # @param [String] tag
         def syncPages(tag='pages-group')
@@ -94,8 +93,10 @@ module Middleman::Cli
                     'index'
                 end
             end
-
     end
+
+    Base.register(Middleman::Cli::SyncPages, 'syncPages', 'syncPages [options]', 'Synchronize contenuti di Prismic sulla base del content type')
+
 
     def self.exit_on_failure?
         true

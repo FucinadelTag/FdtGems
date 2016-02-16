@@ -1,4 +1,5 @@
 require 'middleman-core/cli'
+require 'middleman-core/rack' if Middleman::VERSION.to_i > 3
 require 'middleman-core/extensions'
 require 'date'
 
@@ -18,19 +19,19 @@ module Middleman::Cli
             ENV['MM_ROOT']
         end
 
-
-
-
         desc 'syncPodioData [options]', 'Sincronizza alcuni dati provenienti da Podio creando pagine statiche'
-        method_option 'view_name',
-                        aliases: '-N',
-                        default: 'consumabili',
-                        desc: "La vew di podio che filtra i contenuti"
+
+        class_option :view_name,
+                    type: :string,
+                    aliases: '-V',
+                    default: 'consumabili',
+                    desc: 'La vew di podio che filtra i contenuti'
+
         # The syncPages task
         # @param [String] tag
         def syncPodioData(view_name='consumabili', templateName='prodotti')
 
-            podio_middleman = shared_instance.podio_middleman
+            podio_middleman = shared_instance.config[:podio_middleman]
 
             items = podio_middleman.getView (view_name)
 
@@ -57,7 +58,7 @@ module Middleman::Cli
 
                 puts item['data']
                 @item = item['data']
-                podio_middleman = shared_instance.podio_middleman
+                podio_middleman = shared_instance.config[:podio_middleman]
                 item_path = podio_middleman.getPath(view_name,item)
 
                 pageTemplate = getTemplateName(templateName)
@@ -66,7 +67,8 @@ module Middleman::Cli
             end
 
             def shared_instance
-                @shared_instance ||= ::Middleman::Application.server.inst
+                @shared_instance ||= ::Middleman::Application.new do
+                end
             end
 
             def getTemplateName (tamplateName='default')
@@ -82,6 +84,10 @@ module Middleman::Cli
             end
 
     end
+    # Add to CLI
+    Base.register(Middleman::Cli::SyncPodioData, 'syncPodioData', 'syncPodioData [options]', 'Sincronizza alcuni dati provenienti da Podio creando pagine statiche')
+
+    Base.map('syncPodioData' => 'syncPodioData')
 
     def self.exit_on_failure?
         true
