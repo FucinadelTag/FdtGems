@@ -62,7 +62,7 @@ module Middleman::Cli
                 item_path = podio_middleman.getPath(view_name,item)
 
                 pageTemplate = getTemplateName(templateName)
-                template pageTemplate, File.join(shared_instance.source_dir, item_path)
+                template pageTemplate, File.join(shared_instance.source_dir, item_path), force: true
 
             end
 

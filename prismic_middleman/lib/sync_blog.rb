@@ -84,7 +84,7 @@ module Middleman
             params = date_to_params(@date).merge(category: @category, title: @slug)
             article_path = apply_uri_template path_template, params
 
-            template prismic_middleman_options['template'], File.join(shared_instance.source_dir, article_path + prismic_middleman_options['default_extension'])
+            template prismic_middleman_options['template'], File.join(shared_instance.source_dir, article_path + prismic_middleman_options['default_extension']), force: true
           end
 
           shared_instance.logger.info " Contentful Sync: Done!"
