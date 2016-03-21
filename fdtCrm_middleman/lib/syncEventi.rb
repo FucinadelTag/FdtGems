@@ -25,61 +25,29 @@ module Middleman::Cli
 
         desc 'syncEventi NAME [options]', 'Sincronizza gli eventi'
 
-        class_option :document_type,
+        class_option :collection,
                     type: :string,
                     aliases: '-T',
-                    desc: 'Il document type'
+                    desc: 'Il nom della collection di Meteor'
 
         # The syncPages task
         # @param [String] tag
-        def syncEventi()
+        def syncEventi(collection='eventi')
 
-            prismic_middleman = shared_instance.prismic_middleman
+            fdtCrsm_middleman = shared_instance.config[:fdtCrm_middleman]
 
-            shared_instance.logger.info "  Prismic Sync: Start..."
+            shared_instance.logger.info "  FdT Crm Sync: Start..."
 
-            site = prismic_middleman.get_by_tags ('site')
-            siteData = prismic_middleman.getBlockData (site.first)
+            dati = fdtCrsm_middleman.get_collection_data (collection)
 
-            puts tag
-
-
-
-            prismic_middleman.get_by_tags(tag).each do |document|
-
-                pageData = prismic_middleman.getBlockData (document)
-                category = prismic_middleman.get_document(document["block.category"].id);
-
-                if category.slug == 'home'
-                    categorySlug = '';
-                else
-                    categorySlug = category.slug
-                end
-
-                @title = pageData ['title']
-                @slug  = pageData ['slug']
-                @categorySlug = categorySlug
-                @category = category
-                @pageData = pageData
-                @siteData = siteData
-
-                prismic_inst = shared_instance.prismic_middleman(options[:prismic])
-
-                path_template = uri_template prismic_inst.options.permalink
-                params = {category: @categorySlug, title: getUriTitle(pageData)}
-                article_path = apply_uri_template path_template, params
-
-                pageTemplate = getTemplateName (pageData ['pageType'])
-                template pageTemplate, File.join(shared_instance.source_dir, article_path + prismic_inst.options.default_extension)
-                #print template pageTemplate
-
-            end
+            puts collection
 
         end
 
         private
             def shared_instance
-                @shared_instance ||= ::Middleman::Application.server.inst
+                @shared_instance ||= ::Middleman::Application.new do
+                end
             end
 
             def getTemplateName (tamplateName='default')
