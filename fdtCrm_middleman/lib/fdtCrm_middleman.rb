@@ -29,8 +29,11 @@ class FdtcrmMiddleman < ::Middleman::Extension
 
 
     def get_collection_data (collection='eventi')
-        response = RestClient.get options.fdtCrm_url
-        puts response.body
+        response = RestClient.get options.fdtCrm_url , {:accept => :json}
+
+        my_hash = JSON.parse(response.body)
+
+        return JSON.parse (my_hash['data'])
     end
 
     # A Sitemap Manipulator

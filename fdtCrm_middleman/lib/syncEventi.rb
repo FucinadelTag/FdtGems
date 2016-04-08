@@ -27,7 +27,7 @@ module Middleman::Cli
 
         class_option :collection,
                     type: :string,
-                    aliases: '-T',
+                    aliases: '-C',
                     desc: 'Il nom della collection di Meteor'
 
         # The syncPages task
@@ -40,7 +40,9 @@ module Middleman::Cli
 
             dati = fdtCrsm_middleman.get_collection_data (collection)
 
-            puts collection
+            file = shared_instance.root + '/data/calendario_corsi.json'
+
+            File.open(file, 'w') { |file| file.write(JSON.pretty_generate(dati)) }
 
         end
 
