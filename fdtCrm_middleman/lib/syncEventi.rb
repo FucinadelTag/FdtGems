@@ -40,7 +40,7 @@ module Middleman::Cli
 
             dati = fdtCrsm_middleman.get_collection_data (collection)
 
-            file = shared_instance.root + '/data/calendario_corsi.json'
+            file = shared_instance.root + '/data/calendario.json'
 
             File.open(file, 'w:UTF-8') { |file| file.write(JSON.pretty_generate(dati)) }
 
