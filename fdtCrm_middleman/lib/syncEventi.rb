@@ -42,7 +42,7 @@ module Middleman::Cli
 
             file = shared_instance.root + '/data/calendario_corsi.json'
 
-            File.open(file, 'w') { |file| file.write(JSON.pretty_generate(dati)) }
+            File.open(file, 'w:UTF-8') { |file| file.write(JSON.pretty_generate(dati)) }
 
         end
 
