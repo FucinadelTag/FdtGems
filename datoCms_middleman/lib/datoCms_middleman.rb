@@ -4,7 +4,7 @@ require 'middleman-blog/uri_templates'
 require "rest_client"
 require 'padrino-helpers'
 require 'padrino/rendering'
-require 'syncEventi'
+require 'syncProdotti'
 
 # Extension namespace
 class DatocmsMiddleman < ::Middleman::Extension
@@ -28,12 +28,12 @@ class DatocmsMiddleman < ::Middleman::Extension
     end
 
 
-    def get_collection_data (collection='eventi')
-        response = RestClient.get options.datoCms_url , {:accept => :json}
+    def get_collection_data (collection='prodotto')
+        response = RestClient.get options.datoCms_url , {params: {'filter[type]' => collection}, :accept => :json, :Authorization => 'Bearer ' + options.datoCms_api_token}
 
         my_hash = JSON.parse(response.body)
 
-        return JSON.parse (my_hash['data'])
+        return my_hash['data']
     end
 
     # A Sitemap Manipulator

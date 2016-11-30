@@ -32,13 +32,13 @@ module Middleman::Cli
 
         # The syncPages task
         # @param [String] tag
-        def syncProdotti(collection='prodotti')
+        def syncProdotti(collection='prodotto')
 
             datoCms_middleman = shared_instance.config[:datoCms_middleman]
 
             shared_instance.logger.info "  FdT datoCms Sync: Start..."
 
-            dati = fdtCrsm_middleman.get_collection_data (collection)
+            dati = datoCms_middleman.get_collection_data (collection)
 
             file = shared_instance.root + '/data/prodotti.json'
 
