@@ -51,8 +51,15 @@ module Middleman
               @image  = document["news.image"].get_view('wide').url
               @body  = document["news.body"].as_html(nil)
               @abstract  = document["news.abstract"].as_text
-              @fonte  = document["news.fonte"].as_text
+              #@fonte  = document["news.fonte"].as_text
+              if document["news.fonte"]
+                  @fonte  = document["news.fonte"].as_text
+              else
+                  @fonte = false
+              end
             end
+
+
 
             if type == 'blog'
               author = prismic_middleman.get_document(document["blog.author"].id);
